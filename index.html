@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>NEAR Sandbox: demo & visioning</title>
+    <link rel="preconnect" href="https://rsms.me">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+        font-variant: slashed-zero;
+        line-height: 1.4;
+        --red: #FF585D;
+        --orange: #FFB259;
+        --yellow: #F0EC74;
+        --green: #00C08B;
+        --blue: #00C1DE;
+        --royal: #0072CE;
+        --purple: #627EEA;
+      }
+      ::selection {
+        background: var(--royal);
+        color: white;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        line-height: 1.1;
+      }
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      a {
+        color: var(--blue);
+        text-decoration: none;
+        border-bottom: 1px solid var(--blue);
+      }
+      a:focus, a:hover {
+        color: var(--royal);
+      }
+      a:active {
+        color: var(--red);
+      }
+      kbd {
+        background: white;
+        color: black;
+        padding: 0 0.2em;
+        border-radius: 5px;
+        box-shadow: 0 0 4px rgba(0,0,0,0.5) inset;
+      }
+      blockquote {
+        border-left: 4px solid white;
+        margin: 0;
+        padding-left: 1rem;
+      }
+      .remark-slide-content {
+        background-size: contain;
+        font-size: calc(16px + 2vmin);
+        padding: 1rem 4rem;
+      }
+      .remark-slide-content h1 {
+        font-size: 2em;
+      }
+      .remark-slide-content h2 {
+        font-size: 1.5em;
+      }
+      .remark-slide-content strong {
+        color: white;
+        background: linear-gradient(to right, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .remark-slide-content em {
+        font-style: normal;
+        color: var(--yellow);
+      }
+      .remark-slide-content > *:first-child {
+        margin-top: 0;
+      }
+      .remark-slide-number {
+        font-size: 0.3em;
+        display: none;
+      }
+      .small {
+        font-size: calc(16px + 1vmin);
+      }
+      code {
+        font-family: "Source Code Pro",monospace;
+      }
+      .remark-code {
+        font-size: 0.6em;
+      }
+      @media screen {
+        body, body.remark-container {
+          background: black;
+          color: white;
+        }
+        .remark-slide-content {
+          background-color: black;
+        }
+        .remark-slide-scaler {
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source" style="display:none">
+
+class: small
+
+# NEAR *Sandbox* <br><small>Demo & Visioning</small>
+
+How to use the slides:
+
+* &lt;kbd&gt;P&lt;/kbd&gt; toggle presenter notes
+* &lt;kbd&gt;?&lt;/kbd&gt; help menu
+* &lt;kbd&gt;&rarr;&lt;/kbd&gt; next slide
+
+Also, [here's the source](https://github.com/chadoh/sandbox-talk)
+
+---
+
+# NEAR *Sandbox* <br><small>Demo & Visioning</small>
+
+Hey friends! Help us guide development of NEAR Sandbox and related tools.
+
+<small>
+  *Chad O* • *Willem Wyndam*  
+  These slides: [chadoh.com/near-sandbox](https://chadoh.com/near-sandbox)  
+</small>
+
+---
+
+# NEAR *Sandbox* <br><small>Demo & Visioning</small>
+
+1. What is NEAR Sandbox today?
+2. Who is it for?
+3. Why are we building it?
+4. What problems are we solving?
+5. Demo!
+6. Naming
+
+---
+
+# What is it today?
+
+--
+
+A setting [in nearcore](https://github.com/near/nearcore/blob/624a3bc621ebb76b9a8e6d718cb92a30590ddfb0/Makefile#L67-L69):
+
+```makefile
+sandbox:
+  CARGO_TARGET_DIR=sandbox cargo build -p neard --features sandbox
+  mv sandbox/debug/neard target/debug/near-sandbox
+```
+
+---
+
+# Who is it for?
+
+--
+
+![a funnel](img/funnel.png)
+
+---
+
+# Who is it for?
+
+![funnel bottom](img/funnel-bottom.png)
+
+???
+
+NEAR Sandbox is a tool for people building apps more complex than most of the ones we maintain in-house. Apps that have multiple contracts, and contracts that interact with external contracts.
+
+They are our most committed builders.
+
+---
+
+# Why are we building it?
+
+--
+
+[A proposal from Max](https://gov.near.org/t/revisiting-contract-testing-framework/2920)
+
+--
+
+> We discussed getting rid of [simulation testing] and replacing it with a NEAR node, similar to how Ganache is used by Truffle.
+>
+> We call NEAR's version of Ganache "Sandbox"
+
+---
+
+# What problems are we solving?
+
+--
+
+1. Better Simulation Testing
+--
+
+2. Local Development
+--
+
+3. End-to-End Testing
+
+---
+
+class: small
+
+*Why are we building it?*
+
+# 1. Better Simulation Testing
+
+--
+
+The topic of [Max's proposal](https://gov.near.org/t/revisiting-contract-testing-framework/2920).
+--
+
+Motivation highlights:
+
+--
+
+* Easier maintenance
+--
+
+* No language-specific test frameworks
+--
+
+* Easier testing in multiple networks (sandbox local node, testnet, mainnet)
+
+---
+
+class: small
+
+*Why are we building it?*
+
+# 2. Local Development
+
+--
+
+A hole in our tool kit.
+--
+
+Running everything locally today:
+
+--
+1. Run a NEAR node
+--
+
+   (with sandbox or without)
+--
+
+2. Run [near-contract-helper](https://github.com/near/near-contract-helper)
+--
+   (peer dependency: PostgreSQL)
+
+--
+3. Run [NEAR Wallet](http://github.com/near/near-wallet)
+
+--
+4. [Explorer](https://github.com/near/near-explorer)?
+
+--
+5. [Indexer](https://github.com/near/near-indexer-for-explorer)??
+
+--
+6. Your actual app
+
+--
+
+And then you still can't use contracts & contract state from mainnet or testnet!
+
+???
+
+Many at NEAR seem weirdly blaisé about this. Every other team I've worked on has primarily used full-local environments. It feels amateur to me to not even offer it as a possibility.
+
+
+---
+
+class: small
+
+*Why are we building it?*
+
+# 3. End-to-End Tests
+
+--
+Browser-to-blockchain tests with [Cypress.js](https://www.cypress.io/), [Nightwatch.js](http://nightwatchjs.org/), or [others](https://www.slant.co/topics/8034/~javascript-end-to-end-testing-tools).
+
+--
+
+*Given* I have account "me"  
+--
+
+*And* there is a guest-book contract at "guest-book"  
+--
+
+*When* I sign in with NEAR Wallet  
+--
+
+*Then* I should...
+
+???
+
+This becomes possible with the previous tools, and would (probably) provide huge value to teams building complex apps on NEAR.
+
+---
+
+# **Demo!**
+
+--
+
+1. rust-status-message
+--
+
+2. create-near-app
+
+???
+
+For each we'll look at the old approach and compare to the new
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [old](https://github.com/near-examples/rust-status-message)
+
+--
+
+```js
+const nearAPI = require("near-api-js");
+const BN = require("bn.js");
+const fs = require("fs").promises;
+const assert = require("assert").strict;
+```
+
+???
+
+A way "integration" tests were approached in the past
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [old](https://github.com/near-examples/rust-status-message)
+
+```js
+function getConfig(env) {
+  switch (env) {
+    case "sandbox":
+    case "local":
+      return {
+        networkId: "sandbox",
+        nodeUrl: "http://localhost:3030",
+        masterAccount: "test.near",
+        contractAccount: "status-message.test.near",
+        keyPath: "/tmp/near-sandbox/validator_key.json",
+      };
+  }
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [old](https://github.com/near-examples/rust-status-message)
+
+```js
+const contractMethods = {
+  viewMethods: ["get_status"],
+  changeMethods: ["set_status"],
+};
+let config;
+let masterAccount;
+let masterKey;
+let pubKey;
+let keyStore;
+let near;
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [old](https://github.com/near-examples/rust-status-message)
+
+```js
+async function initNear() {
+  config = getConfig(process.env.NEAR_ENV || "sandbox");
+  const keyFile = require(config.keyPath);
+  masterKey = nearAPI.utils.KeyPair.fromString(
+    keyFile.secret_key || keyFile.private_key
+  );
+  pubKey = masterKey.getPublicKey();
+  keyStore = new nearAPI.keyStores.InMemoryKeyStore();
+  keyStore.setKey(config.networkId, config.masterAccount, masterKey);
+  near = await nearAPI.connect({
+    deps: {
+      keyStore,
+    },
+    networkId: config.networkId,
+    nodeUrl: config.nodeUrl,
+  });
+  masterAccount = new nearAPI.Account(near.connection, config.masterAccount);
+  console.log("Finish init NEAR");
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [old](https://github.com/near-examples/rust-status-message)
+
+```js
+async function createContractUser(
+  accountPrefix,
+  contractAccountId,
+  contractMethods
+) {
+  let accountId = accountPrefix + "." + config.masterAccount;
+  await masterAccount.createAccount(
+    accountId,
+    pubKey,
+    new BN(10).pow(new BN(25))
+  );
+  keyStore.setKey(config.networkId, accountId, masterKey);
+  const account = new nearAPI.Account(near.connection, accountId);
+  const accountUseContract = new nearAPI.Contract(
+    account,
+    contractAccountId,
+    contractMethods
+  );
+  return accountUseContract;
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [old](https://github.com/near-examples/rust-status-message)
+
+```js
+async function initTest() {
+  const contract = await fs.readFile("./res/status_message.wasm");
+  const _contractAccount = await masterAccount.createAndDeployContract(
+    config.contractAccount,
+    pubKey,
+    contract,
+    new BN(10).pow(new BN(25))
+  );
+
+  const aliUseContract = await createContractUser(
+    "ali",
+    config.contractAccount,
+    contractMethods
+  );
+
+  const bobUseContract = await createContractUser(
+    "bob",
+    config.contractAccount,
+    contractMethods
+  );
+  console.log("Finish deploy contracts and create test accounts");
+  return { aliUseContract, bobUseContract };
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [old](https://github.com/near-examples/rust-status-message)
+
+```js
+async function test() {
+  // 1. Creates testing accounts and deploys a contract
+  await initNear();
+  const { aliUseContract, bobUseContract } = await initTest();
+
+  // 2. Ali sets then gets status
+  await aliUseContract.set_status({ args: { message: "hello" } });
+  let ali_msg = await aliUseContract.get_status({ account_id: "ali.test.near" });
+  assert.equal(ali_msg, "hello");
+
+  // 3. Bob gets null status
+  let bob_msg = await bobUseContract.get_status({ account_id: "bob.test.near" });
+  assert.equal(bob_msg, null);
+
+  // 4. Bob has different status than Ali
+  await bobUseContract.set_status({ args: { message: "world" } });
+  bob_msg = await bobUseContract.get_status({ account_id: "bob.test.near" });
+  assert.equal(bob_msg, "world");
+  ali_msg = await aliUseContract.get_status({ account_id: "ali.test.near" });
+  assert.equal(ali_msg, "hello");
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new](https://github.com/near/sandbox/blob/193d423591dcc24b9683d202e816905ca9133ad3/npm/tests/status-message/__tests__/main.spec.ts)
+
+--
+
+```ts
+import { strict as assert } from "assert";
+import { createSandbox, SandboxRuntime, SandboxRunner } from "near-sandbox-runner";
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new](https://github.com/near/sandbox/blob/193d423591dcc24b9683d202e816905ca9133ad3/npm/tests/status-message/__tests__/main.spec.ts)
+
+```ts
+// sandbox creates sub-accounts of 'test.near'
+const ALI = "ali.test.near";
+const BOB = "bob.test.near";
+const CONTRACT = "status-message.test.near";
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new](https://github.com/near/sandbox/blob/193d423591dcc24b9683d202e816905ca9133ad3/npm/tests/status-message/__tests__/main.spec.ts)
+
+```ts
+// 1. Creates testing accounts and deploys a contract
+async function initSandbox() {
+  return await createSandbox(async (sandbox: SandboxRuntime) => {
+    await sandbox.createAndDeploy(
+      CONTRACT,
+      `${__dirname}/../build/debug/status_message.wasm`
+    );
+    await sandbox.createAccount(ALI);
+    await sandbox.createAccount(BOB);
+  })
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new](https://github.com/near/sandbox/blob/193d423591dcc24b9683d202e816905ca9133ad3/npm/tests/status-message/__tests__/main.spec.ts)
+
+```ts
+// 2. Ali sets then gets status
+async function testAliSetsStatus(sandboxRunner: SandboxRunner) {
+  await sandboxRunner(async (sandbox: SandboxRuntime) => {
+    const ali = sandbox.getAccount(ALI);
+    const contract = sandbox.getContractAccount(CONTRACT);
+    await ali.call(CONTRACT, "set_status", { message: "hello" })
+    const result = await contract.view("get_status", { account_id: ALI })
+    assert.equal(result, "hello");
+  })
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new](https://github.com/near/sandbox/blob/193d423591dcc24b9683d202e816905ca9133ad3/npm/tests/status-message/__tests__/main.spec.ts)
+
+```ts
+// 3. Bob gets null status
+async function testDefaultStatus(sandboxRunner: SandboxRunner) {
+  await sandboxRunner(async (sandbox: SandboxRuntime) => {
+    const contract = sandbox.getContractAccount(CONTRACT);
+    const result = await contract.view("get_status", { account_id: BOB })
+    assert.equal(result, null)
+  })
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new](https://github.com/near/sandbox/blob/193d423591dcc24b9683d202e816905ca9133ad3/npm/tests/status-message/__tests__/main.spec.ts)
+
+```ts
+// 4. Bob has different status than Ali
+async function testStatusPerAccount(sandboxRunner: SandboxRunner) {
+  await sandboxRunner(async (sandbox: SandboxRuntime) => {
+    const bob = sandbox.getAccount(BOB);
+    const contract = sandbox.getContractAccount(CONTRACT);
+    await bob.call(CONTRACT, "set_status", { message: "world" })
+    const bobStatus = await contract.view( "get_status", { account_id: BOB })
+    assert.equal(bobStatus, "world");
+
+    const aliStatus = await contract.view( "get_status", { account_id: ALI })
+    assert.equal(aliStatus, null)
+  })
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new](https://github.com/near/sandbox/blob/193d423591dcc24b9683d202e816905ca9133ad3/npm/tests/status-message/__tests__/main.spec.ts)
+
+```ts
+jest.setTimeout(15000)
+
+it('works', async () => {
+  const sandboxRunner = await initSandbox()
+  await Promise.all([
+    testAliSetsStatus(sandboxRunner),
+    testDefaultStatus(sandboxRunner),
+    testStatusPerAccount(sandboxRunner),
+  ])
+})
+```
+
+???
+
+Yes, it's slow
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new new](https://github.com/near/sandbox/blob/3e7feb251bb1f0b87de2d96538d6c678876a8b35/npm/tests/status-message/__tests__/main.spec.ts)
+
+--
+
+More Jesty
+
+--
+
+```ts
+let sandboxRunner: SandboxRuntime
+
+beforeAll(async () => {
+  sandboxRunner = await await createSandbox(async (sandbox: SandboxRuntime) => {
+    await sandbox.createAndDeploy(
+      CONTRACT,
+      `${__dirname}/../build/debug/status_message.wasm`
+    );
+    await sandbox.createAccount(ALI);
+    await sandbox.createAccount(BOB);
+  })
+})
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## rust-status-message: [new new](https://github.com/near/sandbox/blob/3e7feb251bb1f0b87de2d96538d6c678876a8b35/npm/tests/status-message/__tests__/main.spec.ts)
+
+More Jesty
+
+```ts
+test('Ali sets then gets status', async () => {
+  await sandboxRunner(async (sandbox: SandboxRuntime) => {
+    const ali = sandbox.getAccount(ALI);
+    const contract = sandbox.getContractAccount(CONTRACT);
+    await ali.call(CONTRACT, "set_status", { message: "hello" })
+    const result = await contract.view("get_status", { account_id: ALI })
+    assert.equal(result, "hello");
+  })
+})
+
+test('Bob gets null status', async () => { ... })
+
+test('Bob and Ali have different statuses', async () => { ... })
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## create-near-app: [old](https://github.com/near/create-near-app/blob/b4073be852e64619b7f762dec314b2d0f8742bc2/templates/vanilla/src/main.test.js)
+
+--
+
+```js
+beforeAll(async function () {
+  // NOTE: nearlib and nearConfig are made available by near-cli/test_environment
+  const near = await nearlib.connect(nearConfig)
+  window.accountId = nearConfig.contractName
+  window.contract = await near.loadContract(nearConfig.contractName, {
+    viewMethods: ['getGreeting'],
+    changeMethods: [],
+    sender: window.accountId
+  })
+})
+
+test('getGreeting', async () => {
+  const message = await window.contract.getGreeting({ accountId: window.accountId })
+  expect(message).toEqual('Hello')
+})
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## create-near-app: [old](https://github.com/near/create-near-app/blob/b4073be852e64619b7f762dec314b2d0f8742bc2/templates/vanilla/src/main.test.js)
+
+[near-cli/test_environment](https://github.com/near/near-cli/blob/18483818f077dd74f86d5e3113baab60a0ca341d/test_environment.js)
+
+--
+
+```js
+class LocalTestEnvironment extends NodeEnvironment {
+  constructor(config) {
+    super(config);
+  }
+
+  async setup() {
+    this.global.nearlib = require('near-api-js');
+    this.global.nearAPI = require('near-api-js');
+    this.global.window = {};
+    let config = require('./get-config')();
+    this.global.testSettings = this.global.nearConfig = config;
+    const now = Date.now();
+    // create random number with at least 7 digits
+    const randomNumber = Math.floor(Math.random() * (9999999 - 1000000) + 1000000);
+    config = Object.assign(config, {
+        contractName: 'test-account-' + now + '-' + randomNumber,
+        accountId: 'test-account-' + now + '-' + randomNumber
+    });
+    const keyStore = new nearAPI.keyStores.UnencryptedFileSystemKeyStore(PROJECT_KEY_DIR);
+    config.deps = Object.assign(config.deps || {}, {
+        storage:  this.createFakeStorage(),
+        keyStore,
+    });
+    const near = await nearAPI.connect(config);
+
+    ...
+  }
+
+  ...
+}
+```
+
+---
+
+class: small
+
+**Demo!**
+
+## create-near-app: new?
+
+--
+
+```ts
+import { createSandbox, SandboxRuntime, SandboxRunner } from "near-sandbox-runner";
+
+let sandboxRunner: SandboxRuntime
+
+beforeAll(async () => {
+  sandboxRunner = await await createSandbox(async (sandbox: SandboxRuntime) => {
+    await sandbox.createAndDeploy(
+      nearConfig.contractName,
+      `${__dirname}/../out/main.wasm`
+    );
+  })
+})
+
+test('get default greeting', async () => {
+  await sandboxRunner(async (sandbox: SandboxRuntime) => {
+    const contract = sandbox.getContractAccount(nearConfig.contractName);
+    const message = await contract.view('get_greeting', { accountId: window.accountId })
+    expect(message).toEqual('Hello')
+  })
+})
+```
+
+???
+
+Much more explicit
+
+---
+
+# **Demo!**
+
+Same tool for current "simple" frontend tests as well as complex simulation tests!
+
+---
+
+# Naming
+
+--
+
+Two primordial libraries taking shape:
+
+--
+
+1. Local environment
+--
+
+2. <strike>Simulation</strike> testing
+
+---
+
+# Naming
+
+Two primordial libraries taking shape:
+
+1. Local environment
+   - [`near-sandbox`](https://www.npmjs.com/package/near-sandbox) (do we like this name?)
+2. <strike>Simulation</strike> testing
+--
+
+   - `near-contract-testing`
+--
+
+   - `near-test-runner`
+--
+
+   - `near-test-environment`
+--
+
+   - `near-test-env`
+
+---
+
+class: small
+
+# What we covered
+
+1. What is NEAR Sandbox today?
+2. Who is it for?
+3. Why are we building it?
+4. What problems are we solving?
+5. Demo!
+6. Naming
+
+--
+
+## Next
+
+process feedback, release initial libraries, start iterating!
+
+    </textarea>
+    <script src="remark-latest.min.js"></script>
+    <script>var slideshow = remark.create()</script>
+  </body>
+</html>
