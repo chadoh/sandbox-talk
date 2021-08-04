@@ -671,7 +671,7 @@ More Jesty
 let sandboxRunner: SandboxRuntime
 
 beforeAll(async () => {
-  sandboxRunner = await await createSandbox(async (sandbox: SandboxRuntime) => {
+  sandboxRunner = await createSandbox(async (sandbox: SandboxRuntime) => {
     await sandbox.createAndDeploy(
       CONTRACT,
       `${__dirname}/../build/debug/status_message.wasm`
@@ -797,7 +797,7 @@ import { createSandbox, SandboxRuntime, SandboxRunner } from "near-sandbox-runne
 let sandboxRunner: SandboxRuntime
 
 beforeAll(async () => {
-  sandboxRunner = await await createSandbox(async (sandbox: SandboxRuntime) => {
+  sandboxRunner = await createSandbox(async (sandbox: SandboxRuntime) => {
     await sandbox.createAndDeploy(
       nearConfig.contractName,
       `${__dirname}/../out/main.wasm`
